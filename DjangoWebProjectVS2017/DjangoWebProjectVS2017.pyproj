@@ -70,6 +70,8 @@
     <Content Include="app\templates\app\layout.html" />
     <Content Include="app\templates\app\login.html" />
     <Content Include="app\templates\app\loginpartial.html" />
+    <Content Include="app\templates\app\ShowQuestions.html" />
+    <Content Include="app\templates\app\ShowQuestionsBySubject.html" />
     <Content Include="app\templates\polls\choice_new.html" />
     <Content Include="app\templates\polls\detail.html" />
     <Content Include="app\templates\polls\grafico.html" />

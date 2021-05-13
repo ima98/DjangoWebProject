@@ -3,6 +3,7 @@
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
         <li><span class="navbar-brand">Bienvenido ... {{ user.username }}!</span></li>
+        <li><a href="{% url 'ShowQuestions' %}">Ver preguntas y respuestas.</a></li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesion</a></li>
     </ul>
 

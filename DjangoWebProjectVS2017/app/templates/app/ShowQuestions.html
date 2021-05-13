@@ -1,0 +1,21 @@
+{% extends "app/layout.html" %}
+{% block content %}
+
+<h2>{{ title }}</h2>
+<h3>{{ message }}</h3>
+
+<form method = "post" action = "{% url 'ShowQuestionsBySubject' %}">{% csrf_token %}
+    {% if latest_question_list %}
+        <select name="dropList">
+            {% for subject in subjects %}
+                <option value="{{ subject.subject }}"> {{ subject.subject }}</option>
+            {% endfor %}
+        </select>
+  
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+<input  type = "submit" value="Submit">
+</form>
+
+{% endblock %}>

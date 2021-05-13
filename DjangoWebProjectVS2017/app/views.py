@@ -56,9 +56,12 @@ def about(request):
 def index(request):
     latest_question_list = Question2.objects.order_by('-pub_date')
     template = loader.get_template('polls/index.html')
+    questions=Question2.objects.all()
+    subjects =questions.values('subject').distinct()
     context = {
                 'title':'Lista de preguntas de la encuesta',
                 'latest_question_list': latest_question_list,
+                'subjects':subjects,
               }
     return render(request, 'polls/index.html', context)
 
@@ -74,7 +77,7 @@ def vote(request, question_id):
     p = get_object_or_404(Question2, pk=question_id)
     try:
         selected_choice = p.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
+    except (KeyError, Choice2.DoesNotExist):
         # Vuelve a mostrar el form.
         return render(request, 'polls/detail.html', {
             'question': p,
@@ -103,17 +106,26 @@ def question_new(request):
 
 def choice_add(request, question_id):
         question = Question2.objects.get(id = question_id)
-        numChoice = Choice2.objects.filter(question = question_id).count()
+        choiceList =Choice2.objects.filter(question = question_id)
+        numChoice = choiceList.count()
+        numCorrectas=choiceList.filter(isCorrect = True).count()
         message=''
         if request.method =='POST':
             form = ChoiceForm(request.POST)
             if form.is_valid():
                 if numChoice < 4:
-                    choice = form.save(commit = False)
-                    choice.question = question
-                    choice.vote = 0
-                    choice.save()         
-                    #form.save()
+                    choiceCheckBox=form.cleaned_data['isCorrect']
+                    if numCorrectas <1 or choiceCheckBox is False:
+                        choice = form.save(commit = False)
+                        choice.question = question
+                        #choice.votes = 0
+                        choice.save()         
+                        #form.save()
+                        message= 'Opción añadida correctamente'
+                    else:
+                        message= 'Solo puede haber una opción correcta'
+                else:
+                    message= 'Máximo de opciones alcanzadas'
         else: 
             form = ChoiceForm()
         #return render_to_response ('choice_new.html', {'form': form, 'poll_id': poll_id,}, context_instance = RequestContext(request),)
@@ -151,3 +163,27 @@ def users_detail(request):
                 'latest_user_list': latest_user_list,
               }
     return render(request, 'polls/users.html', context)
+
+def ShowQuestions(request):
+    latest_question_list = Question2.objects.order_by('-pub_date')
+    template = loader.get_template('app/ShowQuestions.html')    
+    questions = Question2.objects.all()
+    temas = questions.values('subject').distinct()
+    context = {
+                'title':'Ver preguntas y respuestas',
+                'message':'Listado de las preguntas y sus respectivas respuestas',
+                'latest_question_list': latest_question_list,
+                'subjects':temas,
+              }
+    return render(request, 'app/ShowQuestions.html', context)
+
+def ShowQuestionsBySubject(request):
+    selected = request.POST['dropList']
+    listaObjectos = Question2.objects.filter(subject=request.POST['dropList'])
+
+    context = {
+            'title':'Ver preguntas y respuestas por tema',
+            'message':'Listado de las preguntas y sus respectivas respuestas con el tema "' + selected + '"',
+            'listaObjectos': listaObjectos,
+            }
+    return render(request, 'app/ShowQuestionsBySubject.html', context)
