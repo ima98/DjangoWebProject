@@ -92,17 +92,22 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse('results', args=(p.id,)))
 
 def question_new(request):
+        message=''
         if request.method == "POST":
             form = QuestionForm(request.POST)
             if form.is_valid():
-                question = form.save(commit=False)
-                question.pub_date=datetime.now()
-                question.save()
-                #return redirect('detail', pk=question_id)
-                #return render(request, 'polls/index.html', {'title':'Respuestas posibles','question': question})
+                num=form.cleaned_data['numChoices']
+                if num>1 and num<5:
+                    question = form.save(commit=False)
+                    question.pub_date=datetime.now()
+                    question.save()
+                    #return redirect('detail', pk=question_id)
+                    #return render(request, 'polls/index.html', {'title':'Respuestas posibles','question': question})
+                else:
+                    message='El número de respuestas debe estar entre 2 y 4'
         else:
             form = QuestionForm()
-        return render(request, 'polls/question_new.html', {'form': form})
+        return render(request, 'polls/question_new.html', {'form': form, 'message':message})
 
 def choice_add(request, question_id):
         question = Question2.objects.get(id = question_id)
@@ -113,7 +118,7 @@ def choice_add(request, question_id):
         if request.method =='POST':
             form = ChoiceForm(request.POST)
             if form.is_valid():
-                if numChoice < 4:
+                if numChoice < question.numChoices:
                     choiceCheckBox=form.cleaned_data['isCorrect']
                     if numCorrectas <1 or choiceCheckBox is False:
                         choice = form.save(commit = False)

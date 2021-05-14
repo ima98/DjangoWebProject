@@ -25,6 +25,7 @@ class Question2(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     subject= models.CharField(max_length=200, default="")
+    numChoices =models.IntegerField(default=4)
 
 class Choice2(models.Model):
     question = models.ForeignKey(Question2)
