@@ -184,11 +184,11 @@ def ShowQuestions(request):
 
 def ShowQuestionsBySubject(request):
     selected = request.POST['dropList']
-    listaObjectos = Question2.objects.filter(subject=request.POST['dropList'])
+    listaObjetos = Question2.objects.filter(subject=request.POST['dropList'])
 
     context = {
             'title':'Ver preguntas y respuestas por tema',
             'message':'Listado de las preguntas y sus respectivas respuestas con el tema "' + selected + '"',
-            'listaObjectos': listaObjectos,
+            'listaObjetos': listaObjetos,
             }
     return render(request, 'app/ShowQuestionsBySubject.html', context)

@@ -20,12 +20,19 @@ class User(models.Model):
     nombre = models.CharField(max_length=200)
 
 
-#copias de los modelos
+#copias de los 
+
+
+
+
 class Question2(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     subject= models.CharField(max_length=200, default="")
     numChoices =models.IntegerField(default=4)
+    #choices = models.ManyToManyField(Choice2)
+    def __str__(self):
+        return self.question_text
 
 class Choice2(models.Model):
     question = models.ForeignKey(Question2)

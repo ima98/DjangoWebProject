@@ -61,6 +61,8 @@
     <Folder Include="app\templates\app\" />
     <Folder Include="app\templates\polls\" />
     <Folder Include="DjangoWebProjectVS2017\" />
+    <Folder Include="Properties\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\static\yo.gif" />
@@ -80,6 +82,7 @@
     <Content Include="app\templates\polls\user_new.html" />
     <Content Include="app\templates\polls\question_new.html" />
     <Content Include="app\templates\polls\results.html" />
+    <None Include="Properties\PublishProfiles\DjangoWebProjectImanol - Web Deploy.pubxml" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />
